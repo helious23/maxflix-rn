@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "maxflix-rn",
+    "slug": "maxflix-rn",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "maxflix-rn"
+}
