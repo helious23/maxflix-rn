@@ -3,52 +3,35 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Movies from "../screens/Movies";
 import Tv from "../screens/Tv";
 import Search from "../screens/Search";
-import { Text, View } from "react-native";
+import { useColorScheme } from "react-native";
+import colors from "../colors";
 
 const Tab = createBottomTabNavigator();
 
-const Tabs = () => (
-  <Tab.Navigator
-    initialRouteName="TV"
-    screenOptions={{
-      tabBarLabelPosition: "below-icon",
-      tabBarActiveTintColor: "orange",
-      tabBarInactiveTintColor: "blue",
-      tabBarActiveBackgroundColor: "red",
-      tabBarInactiveBackgroundColor: "yellow",
-      tabBarStyle: { backgroundColor: "skyblue" },
-    }}
-  >
-    <Tab.Screen
-      name="Movies"
-      component={Movies}
-      options={{
+const Tabs = () => {
+  const isDark = useColorScheme() === "dark";
+
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: isDark ? colors.NAVY : "white",
+        },
+        tabBarActiveTintColor: isDark ? colors.ORANGE : colors.NAVY,
+        tabBarInactiveTintColor: isDark ? colors.DARK_GREY : colors.LIGHT_GREY,
         headerStyle: {
-          backgroundColor: "skyblue",
+          backgroundColor: isDark ? colors.NAVY : "white",
         },
         headerTitleStyle: {
-          color: "tomato",
-        },
-        headerRight: () => (
-          <View>
-            <Text>Hello</Text>
-          </View>
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="TV"
-      component={Tv}
-      options={{
-        tabBarBadge: "new",
-        tabBarBadgeStyle: {
-          backgroundColor: "skyblue",
-          color: "red",
+          color: isDark ? "white" : colors.NAVY,
         },
       }}
-    />
-    <Tab.Screen name="Search" component={Search} />
-  </Tab.Navigator>
-);
+    >
+      <Tab.Screen name="Movies" component={Movies} />
+      <Tab.Screen name="TV" component={Tv} />
+      <Tab.Screen name="Search" component={Search} />
+    </Tab.Navigator>
+  );
+};
 
 export default Tabs;
