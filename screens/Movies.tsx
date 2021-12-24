@@ -1,8 +1,14 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components/native";
-import Swiper from "react-native-web-swiper";
-import { ActivityIndicator, Dimensions, StyleSheet } from "react-native";
+import Swiper from "react-native-swiper";
+
+import {
+  ActivityIndicator,
+  Dimensions,
+  StyleSheet,
+  useColorScheme,
+} from "react-native";
 import { makeImgpath } from "../utils";
 import { BlurView } from "expo-blur";
 
@@ -27,9 +33,41 @@ const Loader = styled.View`
 
 const BgImg = styled.Image``;
 
-const Title = styled.Text``;
+const Poster = styled.Image`
+  width: 100px;
+  height: 160px;
+  border-radius: 5px;
+`;
+
+const Wrapper = styled.View`
+  flex-direction: row;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Column = styled.View`
+  width: 40%;
+  margin-left: 16px;
+`;
+
+const Title = styled.Text`
+  font-size: 16px;
+  font-weight: 600;
+  color: ${(props) => props.theme.posterTitleTextColor};
+`;
+
+const Overview = styled.Text`
+  margin-top: 10px;
+  color: ${(props) => props.theme.posterOverviewColor};
+`;
+
+const Votes = styled(Overview)`
+  font-size: 14px;
+`;
 
 const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
+  const isDark = useColorScheme() === "dark";
   const [loading, setLoading] = useState(true);
   const [nowPlaying, setNowPlaying] = useState([]);
   const getNowPlaying = async () => {
@@ -53,10 +91,13 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
   ) : (
     <Container>
       <Swiper
-        containerStyle={{ width: "100%", height: SCREEN_HEIGHT / 4 }}
         loop
-        timeout={3.5}
-        controlsEnabled={false}
+        horizontal
+        autoplay
+        autoplayTimeout={3.5}
+        showsButtons={false}
+        showsPagination={false}
+        containerStyle={{ width: "100%", height: SCREEN_HEIGHT / 4 }}
       >
         {nowPlaying.map((movie) => (
           <View key={movie.id}>
@@ -65,11 +106,20 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
               style={StyleSheet.absoluteFill}
             />
             <BlurView
-              intensity={20}
+              intensity={100}
               style={StyleSheet.absoluteFill}
-              tint={"dark"}
+              tint={isDark ? "dark" : "light"}
             >
-              <Title>{movie.title}</Title>
+              <Wrapper>
+                <Poster source={{ uri: makeImgpath(movie.poster_path) }} />
+                <Column>
+                  <Title>{movie.title}</Title>
+                  {movie.vote_average > 0 ? (
+                    <Votes>⭐️ {movie.vote_average} / 10</Votes>
+                  ) : null}
+                  <Overview>{movie.overview.slice(0, 60)}...</Overview>
+                </Column>
+              </Wrapper>
             </BlurView>
           </View>
         ))}
