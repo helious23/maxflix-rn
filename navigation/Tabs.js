@@ -6,6 +6,7 @@ import Tv from "../screens/Tv";
 import Search from "../screens/Search";
 import { useColorScheme } from "react-native";
 import colors from "../colors";
+import Stack from "./Stack";
 
 const Tab = createBottomTabNavigator();
 
