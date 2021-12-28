@@ -6,5 +6,6 @@ declare module "styled-components" {
     textColor: string;
     posterTitleTextColor: string;
     posterOverviewColor: string;
+    defaultGrey: string;
   }
 }
