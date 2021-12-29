@@ -9,6 +9,7 @@ import { useQuery, useQueryClient } from "react-query";
 import { moviesApi, IMovieResponse, IMovie } from "../api";
 import { Loader } from "../components/Loader";
 import { HorizontalList } from "../components/HorizontalList";
+
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Container = styled.FlatList`
@@ -69,6 +70,7 @@ const Movies = () => {
             title={item.title}
             releaseDate={item.release_date}
             overview={item.overview}
+            fullData={item}
           />
         )}
         ListHeaderComponent={
@@ -94,6 +96,7 @@ const Movies = () => {
                   movieTitle={movie.title}
                   voteAverage={movie.vote_average}
                   overview={movie.overview}
+                  fullData={movie}
                 />
               ))}
             </Swiper>

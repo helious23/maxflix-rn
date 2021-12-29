@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import Poster from "./Poster";
 import { useNavigation } from "@react-navigation/native";
+import { IMovie } from "../api";
 
 const View = styled.View`
   flex: 1;
@@ -49,6 +50,7 @@ interface ISlideProps {
   movieTitle: string;
   voteAverage: number;
   overview: string;
+  fullData: IMovie;
 }
 
 const Slide: React.FC<ISlideProps> = ({
@@ -57,11 +59,18 @@ const Slide: React.FC<ISlideProps> = ({
   movieTitle,
   voteAverage,
   overview,
+  fullData,
 }) => {
   const isDark = useColorScheme() === "dark";
   const navigation = useNavigation();
   const goToDetail = () => {
-    navigation.navigate("Stack", { screen: "Detail" });
+    //@ts-ignore
+    navigation.navigate("Stack", {
+      screen: "Detail",
+      params: {
+        ...fullData,
+      },
+    });
   };
   return (
     <TouchableWithoutFeedback onPress={goToDetail}>

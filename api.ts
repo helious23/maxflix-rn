@@ -69,6 +69,12 @@ export const moviesApi = {
       `${BASE_URL}/search/movie?api_key=${API_KEY}&language=ko-KR&page=1&region=kr&include_adult=false&query=${query}`
     ).then((response) => response.json());
   },
+  detail: ({ queryKey }: QueryFunctionContext) => {
+    const [_, id] = queryKey;
+    return fetch(
+      `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=ko-KR&append_to_response=videos,images`
+    ).then((response) => response.json());
+  },
 };
 
 export const tvApi = {
@@ -88,6 +94,12 @@ export const tvApi = {
     const [_, query] = queryKey;
     return fetch(
       `${BASE_URL}/search/tv?api_key=${API_KEY}&language=ko-KR&page=1&region=kr&include_adult=false&query=${query}`
+    ).then((response) => response.json());
+  },
+  detail: ({ queryKey }: QueryFunctionContext) => {
+    const [_, id] = queryKey;
+    return fetch(
+      `${BASE_URL}/tv/${id}?api_key=${API_KEY}&language=ko-KR&append_to_response=videos%2Cimages`
     ).then((response) => response.json());
   },
 };

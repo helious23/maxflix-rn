@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Platform, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import Poster from "./Poster";
+import { IMovie, ITv } from "../api";
 
 const HorizontalMovie = styled.View`
   padding: 0px 20px;
@@ -36,6 +37,7 @@ interface IHorizontalMediaProps {
   overview: string;
   releaseDate?: Date;
   voteAverage?: number;
+  fullData: IMovie;
 }
 
 export const HorizontalMedia: React.FC<IHorizontalMediaProps> = ({
@@ -43,10 +45,17 @@ export const HorizontalMedia: React.FC<IHorizontalMediaProps> = ({
   title,
   releaseDate,
   overview,
+  fullData,
 }) => {
   const navigation = useNavigation();
   const goToDetail = () => {
-    navigation.navigate("Stack", { screen: "Detail" });
+    //@ts-ignore
+    navigation.navigate("Stack", {
+      screen: "Detail",
+      params: {
+        ...fullData,
+      },
+    });
   };
   return (
     <TouchableOpacity onPress={goToDetail}>

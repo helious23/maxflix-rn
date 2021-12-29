@@ -22,7 +22,7 @@ const Tabs = () => {
         tabBarStyle: {
           backgroundColor: isDark ? colors.NAVY : "white",
         },
-        headerShadowVisible: false,
+        // headerShadowVisible: false,
         tabBarActiveTintColor: isDark ? colors.ORANGE : colors.NAVY,
         tabBarInactiveTintColor: isDark ? colors.DARK_GREY : colors.LIGHT_GREY,
         headerStyle: {

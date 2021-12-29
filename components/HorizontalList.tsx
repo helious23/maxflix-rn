@@ -22,7 +22,7 @@ export const HorizontalListSeparator = styled.View`
 
 interface HListProps {
   title: string;
-  data: IMovie[] | ITv[] | undefined;
+  data: ITv[] | IMovie[] | undefined;
 }
 
 export const HorizontalList: React.FC<HListProps> = ({ title, data }) => {
@@ -30,17 +30,19 @@ export const HorizontalList: React.FC<HListProps> = ({ title, data }) => {
     <ListContainer>
       <ListTitle>{title}</ListTitle>
       <FlatList
+        //@ts-ignore
+        data={data}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 20 }}
-        keyExtractor={(item) => item.id + ""}
+        keyExtractor={(item: IMovie | ITv) => item.id + ""}
         ItemSeparatorComponent={HorizontalListSeparator}
-        data={data}
-        renderItem={({ item }) => (
+        renderItem={({ item }: { item: IMovie | ITv }) => (
           <VerticalMedia
             posterPath={item.poster_path || ""}
-            title={item.name ?? item.title}
+            title={"title" in item ? item.title : item.name}
             voteAverage={item.vote_average}
+            fullData={item}
           />
         )}
       />

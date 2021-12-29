@@ -3,8 +3,9 @@ import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import Poster from "./Poster";
 import { Votes } from "./Votes";
+import { IMovie, ITv } from "../api";
 
-const Movie = styled.View`
+const Container = styled.View`
   align-items: center;
 `;
 
@@ -18,27 +19,35 @@ interface IVerticalMediaProps {
   posterPath: string;
   title: string;
   voteAverage?: number;
+  fullData: IMovie | ITv;
 }
 
 export const VerticalMedia: React.FC<IVerticalMediaProps> = ({
   posterPath,
   title,
   voteAverage,
+  fullData,
 }) => {
   const navigation = useNavigation();
   const goToDetail = () => {
-    navigation.navigate("Stack", { screen: "Detail" });
+    //@ts-ignore
+    navigation.navigate("Stack", {
+      screen: "Detail",
+      params: {
+        ...fullData,
+      },
+    });
   };
   return (
     <TouchableOpacity onPress={goToDetail}>
-      <Movie>
+      <Container>
         <Poster path={posterPath} />
         <Title>
           {title.slice(0, 10)}
           {title.length > 10 ? "..." : null}
         </Title>
         <Votes voteAverage={voteAverage} />
-      </Movie>
+      </Container>
     </TouchableOpacity>
   );
 };

@@ -13,7 +13,7 @@ const SearchBar = styled.TextInput`
   border: 1px solid ${(props) => props.theme.searchInputBorderColor};
   border-radius: 10px;
   width: 90%;
-  margin: 10px auto;
+  margin: 20px auto;
   margin-bottom: 40px;
 `;
 
