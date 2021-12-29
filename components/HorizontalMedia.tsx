@@ -1,4 +1,5 @@
-import { Platform } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Platform, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import Poster from "./Poster";
 
@@ -43,28 +44,34 @@ export const HorizontalMedia: React.FC<IHorizontalMediaProps> = ({
   releaseDate,
   overview,
 }) => {
+  const navigation = useNavigation();
+  const goToDetail = () => {
+    navigation.navigate("Stack", { screen: "Detail" });
+  };
   return (
-    <HorizontalMovie>
-      <Poster path={posterPath} />
-      <HorizontalColumn>
-        <Title>{title}</Title>
-        {releaseDate && (
-          <Release>
-            {Platform.OS === "android"
-              ? new Date(releaseDate).toISOString().slice(0, 10)
-              : new Date(releaseDate).toLocaleDateString("ko", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-          </Release>
-        )}
-        <Overview>
-          {overview !== "" && overview.length > 100
-            ? `${overview.slice(0, 100)}...`
-            : overview}
-        </Overview>
-      </HorizontalColumn>
-    </HorizontalMovie>
+    <TouchableOpacity onPress={goToDetail}>
+      <HorizontalMovie>
+        <Poster path={posterPath} />
+        <HorizontalColumn>
+          <Title>{title}</Title>
+          {releaseDate && (
+            <Release>
+              {Platform.OS === "android"
+                ? new Date(releaseDate).toISOString().slice(0, 10)
+                : new Date(releaseDate).toLocaleDateString("ko", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+            </Release>
+          )}
+          <Overview>
+            {overview !== "" && overview.length > 100
+              ? `${overview.slice(0, 100)}...`
+              : overview}
+          </Overview>
+        </HorizontalColumn>
+      </HorizontalMovie>
+    </TouchableOpacity>
   );
 };

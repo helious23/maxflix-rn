@@ -2,8 +2,13 @@ import React from "react";
 import styled from "styled-components/native";
 import { makeImgpath } from "../utils";
 import { BlurView } from "expo-blur";
-import { StyleSheet, useColorScheme } from "react-native";
+import {
+  StyleSheet,
+  TouchableWithoutFeedback,
+  useColorScheme,
+} from "react-native";
 import Poster from "./Poster";
+import { useNavigation } from "@react-navigation/native";
 
 const View = styled.View`
   flex: 1;
@@ -54,28 +59,33 @@ const Slide: React.FC<ISlideProps> = ({
   overview,
 }) => {
   const isDark = useColorScheme() === "dark";
-
+  const navigation = useNavigation();
+  const goToDetail = () => {
+    navigation.navigate("Stack", { screen: "Detail" });
+  };
   return (
-    <View>
-      <BgImg
-        source={{ uri: makeImgpath(backdropPath) }}
-        style={StyleSheet.absoluteFill}
-      />
-      <BlurView
-        intensity={100}
-        style={StyleSheet.absoluteFill}
-        tint={isDark ? "dark" : "light"}
-      >
-        <Wrapper>
-          <Poster path={posterPath} />
-          <Column>
-            <Title>{movieTitle}</Title>
-            {voteAverage > 0 ? <Votes>⭐️ {voteAverage} / 10</Votes> : null}
-            <Overview>{overview?.slice(0, 68)}...</Overview>
-          </Column>
-        </Wrapper>
-      </BlurView>
-    </View>
+    <TouchableWithoutFeedback onPress={goToDetail}>
+      <View>
+        <BgImg
+          source={{ uri: makeImgpath(backdropPath) }}
+          style={StyleSheet.absoluteFill}
+        />
+        <BlurView
+          intensity={100}
+          style={StyleSheet.absoluteFill}
+          tint={isDark ? "dark" : "light"}
+        >
+          <Wrapper>
+            <Poster path={posterPath} />
+            <Column>
+              <Title>{movieTitle}</Title>
+              {voteAverage > 0 ? <Votes>⭐️ {voteAverage} / 10</Votes> : null}
+              <Overview>{overview?.slice(0, 68)}...</Overview>
+            </Column>
+          </Wrapper>
+        </BlurView>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

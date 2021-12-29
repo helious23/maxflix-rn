@@ -7,5 +7,7 @@ declare module "styled-components" {
     posterTitleTextColor: string;
     posterOverviewColor: string;
     defaultGrey: string;
+    searchInputBgColor: string;
+    searchInputBorderColor: string;
   }
 }

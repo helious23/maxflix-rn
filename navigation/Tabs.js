@@ -14,6 +14,7 @@ const Tabs = () => {
 
   return (
     <Tab.Navigator
+      // initialRouteName="Search"
       sceneContainerStyle={{
         backgroundColor: isDark ? colors.NAVY : "white",
       }}

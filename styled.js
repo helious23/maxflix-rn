@@ -4,6 +4,8 @@ export const lightTheme = {
   posterOverviewColor: "rgba(19, 15, 64, 0.7)",
   textColor: "#130f40",
   defaultGrey: "rgba(0,0,0,0.3)",
+  searchInputBgColor: "white",
+  searchInputBorderColor: "#130f40",
 };
 export const darkTheme = {
   mainBgColor: "#130f40",
@@ -11,4 +13,6 @@ export const darkTheme = {
   posterOverviewColor: "rgba(223, 249, 251, 0.7)",
   textColor: "#f0932b",
   defaultGrey: "rgba(255,255,255,0.3)",
+  searchInputBgColor: "white",
+  searchInputBorderColor: "white",
 };

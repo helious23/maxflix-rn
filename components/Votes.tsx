@@ -6,8 +6,14 @@ const Vote = styled.Text`
   font-size: 12px;
 `;
 
-export const Votes: React.FC<{ voteAverage: number }> = ({ voteAverage }) => {
+export const Votes: React.FC<{ voteAverage: number | undefined }> = ({
+  voteAverage,
+}) => {
   return (
-    <Vote>{voteAverage > 0 ? `⭐️ ${voteAverage} / 10` : "Comming soon"}</Vote>
+    <Vote>
+      {voteAverage && voteAverage > 0
+        ? `⭐️ ${voteAverage} / 10`
+        : "Comming soon"}
+    </Vote>
   );
 };
