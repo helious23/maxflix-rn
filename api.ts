@@ -218,13 +218,15 @@ type ITvDetailResponse = {
 export type IDetailResponse = IMovieDetailResonse & ITvDetailResponse;
 
 export const moviesApi = {
-  trending: () =>
+  trending: ({ pageParam }: { pageParam: string | undefined }) =>
     fetch(
-      `${BASE_URL}/trending/movie/week?api_key=${API_KEY}&language=ko-KR&page=1&region=kr`
+      `${BASE_URL}/trending/movie/week?api_key=${API_KEY}&language=ko-KR&page=${
+        pageParam ?? 1
+      }&region=kr`
     ).then((response) => response.json()),
-  upcoming: () =>
+  upcoming: ({ pageParam }: { pageParam: string | undefined }) =>
     fetch(
-      `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=ko-KR&page=1&region=kr`
+      `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=ko-KR&page=${pageParam}`
     ).then((response) => response.json()),
   nowPlaying: () =>
     fetch(
@@ -245,22 +247,24 @@ export const moviesApi = {
 };
 
 export const tvApi = {
-  trending: () =>
+  trending: ({ pageParam }: { pageParam: string | undefined }) =>
     fetch(
-      `${BASE_URL}/trending/tv/week?api_key=${API_KEY}&language=ko-KR&page=1&region=kr`
+      `${BASE_URL}/trending/tv/week?api_key=${API_KEY}&language=ko-KR&page=${
+        pageParam ?? 1
+      }`
     ).then((response) => response.json()),
-  airingToday: () =>
+  airingToday: ({ pageParam }: { pageParam: string | undefined }) =>
     fetch(
-      `${BASE_URL}/tv/airing_today?api_key=${API_KEY}&language=ko-KR&page=1&region=kr`
+      `${BASE_URL}/tv/airing_today?api_key=${API_KEY}&language=ko-KR&page=${pageParam}`
     ).then((response) => response.json()),
-  topRated: () =>
+  topRated: ({ pageParam }: { pageParam: string | undefined }) =>
     fetch(
-      `${BASE_URL}/tv/top_rated?api_key=${API_KEY}&language=ko-KR&page=1&region=kr`
+      `${BASE_URL}/tv/top_rated?api_key=${API_KEY}&language=ko-KR&page=${pageParam}`
     ).then((response) => response.json()),
   search: ({ queryKey }: QueryFunctionContext) => {
     const [_, query] = queryKey;
     return fetch(
-      `${BASE_URL}/search/tv?api_key=${API_KEY}&language=ko-KR&page=1&region=kr&include_adult=false&query=${query}`
+      `${BASE_URL}/search/tv?api_key=${API_KEY}&language=ko-KR&page=1&include_adult=false&query=${query}`
     ).then((response) => response.json());
   },
   detail: ({ queryKey }: QueryFunctionContext) => {

@@ -23,9 +23,14 @@ export const HorizontalListSeparator = styled.View`
 interface HListProps {
   title: string;
   data: ITv[] | IMovie[] | undefined;
+  loadMore: () => void;
 }
 
-export const HorizontalList: React.FC<HListProps> = ({ title, data }) => {
+export const HorizontalList: React.FC<HListProps> = ({
+  title,
+  data,
+  loadMore,
+}) => {
   return (
     <ListContainer>
       <ListTitle>{title}</ListTitle>
@@ -33,6 +38,8 @@ export const HorizontalList: React.FC<HListProps> = ({ title, data }) => {
         //@ts-ignore
         data={data}
         horizontal
+        onEndReached={loadMore}
+        onEndReachedThreshold={1.5}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 20 }}
         keyExtractor={(item: IMovie | ITv) => item.id + ""}

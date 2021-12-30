@@ -6,7 +6,10 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "userInterfaceStyle":"automatic"
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "bundleIdentifier": "org.name.maxflixrn"
+    }
   },
   "name": "maxflix-rn"
 }

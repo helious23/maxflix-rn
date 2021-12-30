@@ -36,7 +36,7 @@ const Background = styled.Image``;
 const Column = styled.View`
   flex-direction: row;
   margin-bottom: 16px;
-  width: 80%;
+  width: 70%;
 `;
 
 const Title = styled.Text`
@@ -142,7 +142,7 @@ export const Detail: React.FC<DetailScreenProps> = ({
 
   useEffect(() => {
     setOptions({
-      title: isMovie ? "Movie" : "TV",
+      title: isMovie ? "Movie" : "TV Show",
       headerRight: () => <ShareButton />,
     });
   }, []);
@@ -160,8 +160,6 @@ export const Detail: React.FC<DetailScreenProps> = ({
     // await Linking.openURL(baseUrl);
     await WebBrowser.openBrowserAsync(baseUrl);
   };
-
-  console.log(data);
 
   return (
     <Container>

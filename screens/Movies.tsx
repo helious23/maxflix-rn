@@ -5,7 +5,7 @@ import Swiper from "react-native-swiper";
 import { Dimensions, FlatList } from "react-native";
 import Slide from "../components/Slide";
 import { HorizontalMedia } from "../components/HorizontalMedia";
-import { useQuery, useQueryClient } from "react-query";
+import { useInfiniteQuery, useQuery, useQueryClient } from "react-query";
 import { moviesApi, IMovieResponse, IMovie } from "../api";
 import { Loader } from "../components/Loader";
 import { HorizontalList } from "../components/HorizontalList";
@@ -37,11 +37,39 @@ const Movies = () => {
   const { data: nowPlayingData, isLoading: nowPlayingLoading } =
     useQuery<IMovieResponse>(["movies", "nowPlaying"], moviesApi.nowPlaying);
 
-  const { data: upcomingData, isLoading: upcomingLoading } =
-    useQuery<IMovieResponse>(["movies", "upcoming"], moviesApi.upcoming);
+  const {
+    data: trendingData,
+    isLoading: trendingLoading,
+    hasNextPage: hasTrendingNextPage,
+    fetchNextPage: fetchTrendingNextPage,
+  } = useInfiniteQuery<IMovieResponse>(
+    ["movies", "trending"],
+    // @ts-ignore
+    moviesApi.trending,
+    {
+      getNextPageParam: (currentPage) => {
+        const nextPage = currentPage.page + 1;
+        return nextPage > currentPage.total_pages ? null : nextPage;
+      },
+    }
+  );
 
-  const { data: trendingData, isLoading: trendingLoading } =
-    useQuery<IMovieResponse>(["movies", "trending"], moviesApi.trending);
+  const {
+    data: upcomingData,
+    isLoading: upcomingLoading,
+    hasNextPage: hasUpcomingNextPage,
+    fetchNextPage: fetchUpcomingNextpage,
+  } = useInfiniteQuery<IMovieResponse>(
+    ["movies", "upcoming"],
+    // @ts-ignore
+    moviesApi.upcoming,
+    {
+      getNextPageParam: (currentPage) => {
+        const nextPage = currentPage.page + 1;
+        return nextPage > currentPage.total_pages ? null : nextPage;
+      },
+    }
+  );
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -53,13 +81,27 @@ const Movies = () => {
 
   const loading = nowPlayingLoading || upcomingLoading || trendingLoading;
 
+  const loadMoreTrending = () => {
+    if (hasTrendingNextPage) {
+      fetchTrendingNextPage();
+    }
+  };
+  const loadMoreUpcoming = () => {
+    if (hasUpcomingNextPage) {
+      fetchUpcomingNextpage();
+    }
+  };
+
   return loading ? (
     <Loader />
   ) : (
     upcomingData && (
       <Container
+        onEndReached={loadMoreUpcoming}
+        // onEndReachedThreshold={1}
         showsHorizontalScrollIndicator={false}
-        data={upcomingData.results}
+        //@ts-ignore
+        data={upcomingData.pages.map((page) => page.results).flat()}
         refreshing={refreshing}
         onRefresh={onRefresh}
         keyExtractor={movieKeyExtractor}
@@ -102,7 +144,9 @@ const Movies = () => {
             </Swiper>
             <HorizontalList
               title="Trending Movies"
-              data={trendingData?.results}
+              loadMore={loadMoreTrending}
+              //@ts-ignore
+              data={trendingData?.pages.map((page) => page.results).flat()}
             />
             <CommingSoonTitle>Comming Soon</CommingSoonTitle>
           </>

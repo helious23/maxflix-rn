@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ScrollView, RefreshControl } from "react-native";
-import { useQuery, useQueryClient } from "react-query";
+import { useInfiniteQuery, useQueryClient } from "react-query";
 import { tvApi, ITvResponse } from "../api";
 import { HorizontalList } from "../components/HorizontalList";
 import { Loader } from "../components/Loader";
@@ -8,16 +8,55 @@ import { Loader } from "../components/Loader";
 const Tv = () => {
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
-  const { data: todayData, isLoading: todayLoading } = useQuery<ITvResponse>(
+  const {
+    data: todayData,
+    isLoading: todayLoading,
+    hasNextPage: hasAiringNextPage,
+    fetchNextPage: fetchAiringNextPage,
+  } = useInfiniteQuery<ITvResponse>(
     ["tv", "today"],
-    tvApi.airingToday
+    //@ts-ignore
+    tvApi.airingToday,
+    {
+      getNextPageParam: (currentPage) => {
+        const nextPage = currentPage.page + 1;
+        return nextPage > currentPage.total_pages ? null : nextPage;
+      },
+    }
   );
-  const { data: topData, isLoading: topLoading } = useQuery<ITvResponse>(
+
+  const {
+    data: topData,
+    isLoading: topLoading,
+    hasNextPage: hasTopRatedNextPage,
+    fetchNextPage: fetchTopRatedNextPage,
+  } = useInfiniteQuery<ITvResponse>(
     ["tv", "top"],
-    tvApi.topRated
+    //@ts-ignore
+    tvApi.topRated,
+    {
+      getNextPageParam: (currentPage) => {
+        const nextPage = currentPage.page + 1;
+        return nextPage > currentPage.total_pages ? null : nextPage;
+      },
+    }
   );
-  const { data: trendingData, isLoading: trendingLoading } =
-    useQuery<ITvResponse>(["tv", "trending"], tvApi.trending);
+  const {
+    data: trendingData,
+    isLoading: trendingLoading,
+    hasNextPage: hasTrendingNextPage,
+    fetchNextPage: fetchTrendingNextPage,
+  } = useInfiniteQuery<ITvResponse>(
+    ["tv", "trending"],
+    //@ts-ignore
+    tvApi.trending,
+    {
+      getNextPageParam: (currentPage) => {
+        const nextPage = currentPage.page + 1;
+        return nextPage > currentPage.total_pages ? null : nextPage;
+      },
+    }
+  );
 
   const loading = todayLoading || topLoading || trendingLoading;
 
@@ -25,6 +64,22 @@ const Tv = () => {
     setRefreshing(true);
     await queryClient.refetchQueries(["tv"]);
     setRefreshing(false);
+  };
+
+  const loadMoreAiring = () => {
+    if (hasAiringNextPage) {
+      fetchAiringNextPage();
+    }
+  };
+  const loadMoreTopRated = () => {
+    if (hasTopRatedNextPage) {
+      fetchTopRatedNextPage();
+    }
+  };
+  const loadMoreTrending = () => {
+    if (hasTrendingNextPage) {
+      fetchTrendingNextPage();
+    }
   };
 
   return loading ? (
@@ -37,13 +92,28 @@ const Tv = () => {
       }
     >
       {trendingData && (
-        <HorizontalList title="Trending TV" data={trendingData.results} />
+        <HorizontalList
+          title="Trending TV"
+          loadMore={loadMoreTrending}
+          //@ts-ignore
+          data={trendingData?.pages.map((page) => page.results).flat()}
+        />
       )}
       {todayData && (
-        <HorizontalList title="Airing Today" data={todayData.results} />
+        <HorizontalList
+          title="Airing Today"
+          loadMore={loadMoreAiring}
+          //@ts-ignore
+          data={todayData?.pages.map((page) => page.results).flat()}
+        />
       )}
       {topData && (
-        <HorizontalList title="Top Rated TV" data={topData.results} />
+        <HorizontalList
+          title="Top Rated TV"
+          loadMore={loadMoreTopRated}
+          //@ts-ignore
+          data={topData?.pages.map((page) => page.results).flat()}
+        />
       )}
     </ScrollView>
   );
