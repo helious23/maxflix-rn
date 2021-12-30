@@ -11,7 +11,7 @@ export const darkTheme = {
   mainBgColor: "#130f40",
   posterTitleTextColor: "#dff9fb",
   posterOverviewColor: "rgba(223, 249, 251, 0.7)",
-  textColor: "#f0932b",
+  textColor: "white",
   defaultGrey: "rgba(255,255,255,0.3)",
   searchInputBgColor: "white",
   searchInputBorderColor: "white",
