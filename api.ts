@@ -1,7 +1,5 @@
 import { QueryFunctionContext } from "react-query";
-
-const API_KEY = "83e4562556a8e370915aa2a360e7d4db";
-const BASE_URL = "https://api.themoviedb.org/3";
+import { API_KEY, BASE_URL } from "@env";
 
 export interface IMovie {
   adult: boolean;

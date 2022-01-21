@@ -6,6 +6,8 @@ export const lightTheme = {
   defaultGrey: "rgba(0,0,0,0.3)",
   searchInputBgColor: "white",
   searchInputBorderColor: "#130f40",
+  tabBarLableColor: "#130f40",
+  tabBarInactiveColor: "#95afc0",
 };
 export const darkTheme = {
   mainBgColor: "#130f40",
@@ -15,4 +17,6 @@ export const darkTheme = {
   defaultGrey: "rgba(255,255,255,0.3)",
   searchInputBgColor: "white",
   searchInputBorderColor: "white",
+  tabBarLableColor: "#f0932b",
+  tabBarInactiveColor: "#535c68",
 };

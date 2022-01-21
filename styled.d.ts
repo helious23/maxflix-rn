@@ -9,5 +9,7 @@ declare module "styled-components" {
     defaultGrey: string;
     searchInputBgColor: string;
     searchInputBorderColor: string;
+    tabBarLableColor: string;
+    tabBarInactiveColor: string;
   }
 }

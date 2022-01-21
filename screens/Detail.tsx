@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import {
   Dimensions,
   StyleSheet,
-  useColorScheme,
   Share,
   TouchableOpacity,
   Platform,
@@ -14,10 +13,10 @@ import { IMovie, ITv, moviesApi, tvApi, IDetailResponse } from "../api";
 import Poster from "../components/Poster";
 import { makeImgpath } from "../utils";
 import { LinearGradient } from "expo-linear-gradient";
-import colors from "../colors";
 import { useQuery } from "react-query";
 import { Loader } from "../components/Loader";
 import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "styled-components";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -26,7 +25,7 @@ const Container = styled.ScrollView`
 `;
 
 const Header = styled.View`
-  height: ${SCREEN_HEIGHT / 4}px;
+  height: ${SCREEN_HEIGHT / 3}px;
   justify-content: flex-end;
   padding: 0px 20px;
 `;
@@ -104,7 +103,7 @@ export const Detail: React.FC<DetailScreenProps> = ({
   navigation: { setOptions },
   route: { params },
 }) => {
-  const isDark = useColorScheme() === "dark";
+  const theme = useTheme();
   const isMovie = "title" in params;
   const [videoOpen, setVideoOpen] = useState(true);
   const { isLoading, data } = useQuery<IDetailResponse>(
@@ -132,18 +131,14 @@ export const Detail: React.FC<DetailScreenProps> = ({
   };
   const ShareButton = () => (
     <TouchableOpacity onPress={shareMedia}>
-      <Ionicons
-        name="share-outline"
-        color={isDark ? "white" : colors.NAVY}
-        size={20}
-      />
+      <Ionicons name="share-outline" color={theme.textColor} size={20} />
     </TouchableOpacity>
   );
 
   useEffect(() => {
     setOptions({
       title: isMovie ? "Movie" : "TV Show",
-      headerRight: () => <ShareButton />,
+      // headerRight: () => <ShareButton />,
     });
   }, []);
 
@@ -169,7 +164,7 @@ export const Detail: React.FC<DetailScreenProps> = ({
           source={{ uri: makeImgpath(params.backdrop_path || "") }}
         />
         <LinearGradient
-          colors={["transparent", colors.BLACK]}
+          colors={["transparent", "black"]}
           style={StyleSheet.absoluteFill}
         />
         <Column>
@@ -191,7 +186,7 @@ export const Detail: React.FC<DetailScreenProps> = ({
                       ? "chevron-up-circle-outline"
                       : "chevron-down-circle-outline"
                   }
-                  color={isDark ? "white" : colors.NAVY}
+                  color={theme.textColor}
                   size={24}
                 />
               </VideoOpenIcon>
@@ -202,7 +197,7 @@ export const Detail: React.FC<DetailScreenProps> = ({
               <VideoBtn onPress={() => openYoutubeLink(video.key)}>
                 <Ionicons
                   name="ios-logo-youtube"
-                  color={isDark ? "white" : colors.NAVY}
+                  color={theme.textColor}
                   size={24}
                 />
                 <BtnText>
